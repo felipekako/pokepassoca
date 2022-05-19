@@ -2,37 +2,48 @@ import './App.css';
 import logoball from "./image/ultra-ball.png";
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import PokemonThumnail from './components/pokemonThumnail';
 function App() {
-  const [allpokemons,setAllpokemon]= useState([]);
+  const [allPokemons,setAllPokemons]= useState([]);
   const [carregar,setCarregar]=useState('https://pokeapi.co/api/v2/pokemon?limit=20');
   
-  const getAllpokemons=async()=>{
+  const getAllPokemons = async () => {
     const res = await fetch(carregar)
-    const data = res.json()
-    setCarregar(data.next)
-    console.log(data)
+    const data = await res.json()
 
-    function createPokemonObject(result){
-      result.forEach(async(pokemon)=>{
+    setCarregar(data.next)
+
+    function createPokemonObject(results)  {
+      results.forEach( async pokemon => {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
-        const data = await res.json()
-        setAllpokemon(currentlisst=>[...currentlisst,data])
-        await allpokemons.sort((a, b)=> a.id - b.id)
-        await console.log(data)
-      
-      });
+        const data =  await res.json()
+        setAllPokemons( currentList => [...currentList, data])
+        await allPokemons.sort((a, b) => a.id - b.id)
+        console.log(data)
+      })
     }
-    createPokemonObject(data.result)
+    createPokemonObject(data.results)
   }
-  useEffect(()=>{
-    getAllpokemons()
-  },[])
+
+ useEffect(() => {
+  getAllPokemons()
+ }, [])
   return (
     <div className="App">
       <div className='container'>
       <p>p</p> <Logoball src={logoball}/>  <p>kemon</p>
       </div>
-
+      <div className='all-container'>
+        { allPokemons.map((pokemon,index)=>
+        <PokemonThumnail
+          id={pokemon.id}
+          image={pokemon.sprites.other.dream_world.front_default}
+          key={index}
+          name={pokemon.name}
+          type={pokemon.type[0].type.name}
+          />
+        )}
+      </div>
       
       <Button id="carregar">carregar mais</Button>
     </div>
