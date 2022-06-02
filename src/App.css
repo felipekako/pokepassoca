@@ -41,10 +41,20 @@
   grid-template-columns: 40px 101px 100px;
 }
 *{
-background-color: rgb(241, 255, 48);
 color: brown;
 font-size: 2rem;
 align-items: center;
+}
+body{
+  background-color: rgb(241, 255, 48);
+}
 
-
+#carregar{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+#ordenar{
+  position: fixed;
+  buttom:
 }

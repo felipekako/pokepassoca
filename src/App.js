@@ -17,17 +17,14 @@ function App() {
       results.forEach( async pokemon => {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
         const data =  await res.json()
+        await allPokemons.sort((a, b) => a.id - b.id);
         setAllPokemons( currentList => [...currentList, data])
-        await allPokemons.sort((a, b) => a.id - b.id)
+        
         console.log(data)
       })
     }
     createPokemonObject(data.results)
   }
-
- useEffect(() => {
-  getAllPokemons()
- }, [])
   return (
     <div className="App">
       <div className='container'>
@@ -40,12 +37,13 @@ function App() {
           image={pokemon.sprites.other.dream_world.front_default}
           key={index}
           name={pokemon.name}
-          type={pokemon.type[0].type.name}
+          type={pokemon.types[0].type.name}
           />
         )}
       </div>
       
-      <Button id="carregar">carregar mais</Button>
+      <Button id="carregar" onClick={() => getAllPokemons()}>carregar mais </Button>
+
     </div>
   );
 }
